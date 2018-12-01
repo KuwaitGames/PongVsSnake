@@ -1,17 +1,27 @@
 ﻿using System.Collections;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Ball : MonoBehaviour {
 
-    public float speed = 30;
+    public float start_speed = 30;
     public bool test_mode = false;
     public GameObject snk_obj;
     private Snake snk_scpt;
+    public GameObject camera_obj;
+    private Game_script game_scrt;
+    private string ball_type;
+    private float speed;
+
     void Start()
     {
+        speed = start_speed;
         // Initial Velocity
+        game_scrt = camera_obj.GetComponent<Game_script>();
+
         GetComponent<Rigidbody2D>().velocity = Vector2.right * speed;
+        setBallType("white");
     }
 
 
@@ -49,6 +59,7 @@ public class Ball : MonoBehaviour {
             Vector2 dir = new Vector2(1, y).normalized;
 
             // Set Velocity with dir * speed
+            speed = speed + 2;
             GetComponent<Rigidbody2D>().velocity = dir * speed;
         }
 
@@ -62,7 +73,7 @@ public class Ball : MonoBehaviour {
 
             // Calculate direction, make length=1 via .normalized
             Vector2 dir = new Vector2(-1, y).normalized;
-
+            speed = speed + 2;
             // Set Velocity with dir * speed
             GetComponent<Rigidbody2D>().velocity = dir * speed;
         }
@@ -71,14 +82,14 @@ public class Ball : MonoBehaviour {
         {
             print("ball hits head");
             snk_scpt = snk_obj.GetComponent<Snake>();
-            snk_scpt.ate = true;
+            snk_scpt.hitBy_type = ball_type;
         }
 
         if (col.gameObject.name.StartsWith("TailPrefab"))
         {
             print("ball hits tail");
             snk_scpt = snk_obj.GetComponent<Snake>();
-            snk_scpt.ate = true;
+            snk_scpt.hitBy_type = ball_type;
         }
 
         if (col.gameObject.name.StartsWith("BorderLeft"))
@@ -88,6 +99,9 @@ public class Ball : MonoBehaviour {
             {
                 GetComponent<Rigidbody2D>().velocity = Vector2.right * 0;
             }
+
+           game_scrt.game_hit("ping");
+
 
         }
 
@@ -99,6 +113,39 @@ public class Ball : MonoBehaviour {
                 GetComponent<Rigidbody2D>().velocity = Vector2.right * 0;
 
             }
+            game_scrt.game_hit("pong");
+
         }
     }
+
+    public void resetBall()
+    {
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        GetComponent<Rigidbody2D>().position = new Vector2(-25, -3);
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        GetComponent<Rigidbody2D>().velocity = Vector2.right * speed;
+        if(ball_type=="white"){
+            ball_type = "red";
+        }else{
+            ball_type = "white";
+        }
+        setBallType(ball_type);
+
     }
+
+
+    void setBallType(string typeIn)
+    {
+        speed = start_speed;
+        if (typeIn=="white"){
+            ball_type = "white";
+            GetComponent<SpriteRenderer>().color = Color.white;
+        }
+
+        if(typeIn=="red"){
+            ball_type = "red";
+            GetComponent<SpriteRenderer>().color = Color.red;
+        }
+    }
+
+}

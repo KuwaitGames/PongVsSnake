@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - pong_score
+  - snake_score
+  - ping_score
   layers:
   - Default
   - TransparentFX

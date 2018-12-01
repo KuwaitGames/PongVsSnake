@@ -24,8 +24,8 @@ public class Tail : MonoBehaviour {
         if (coll.name.StartsWith("Head"))
         {
             print("stop snake");
-            snk_scpt2 = head_obj.GetComponent<Snake>();
-            snk_scpt2.CancelInvoke();
+          //  snk_scpt2 = head_obj.GetComponent<Snake>();
+         //   snk_scpt2.CancelInvoke();
         }
     }
 }
