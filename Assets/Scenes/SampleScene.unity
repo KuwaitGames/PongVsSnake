@@ -819,7 +819,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 20
   axis: Vertical2
-  cpu: 0
+  cpu: 1
   ball_obj: {fileID: 132428981}
   diff: 2
 --- !u!50 &193890100
